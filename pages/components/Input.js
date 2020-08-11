@@ -56,7 +56,7 @@ export default function Input() {
   const [searchKey, setSearchKey] = React.useState('');
   const [showMovies, setMovies] = React.useState(false);
   const [list, setList] = React.useState([]);
-  const [offset, setOffset] = React.useState(0);
+  const [offSet, setOffset] = React.useState(0);
   const [perPage, setPerPage] = React.useState(8);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [pageCount, setPageCount] = React.useState(1);
@@ -80,49 +80,88 @@ export default function Input() {
         }).then(movies => {
             setList(movies.Search)
             setMovies(true)
-            // console.log(movies);
+            console.log(list);
+            getList();
         })
-    getList();
+    
     // console.log("event.target.value")
   }
 
   //pages
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
-    let offset = currentPage * perPage;
+    let offset = (value-1) * perPage;
     setOffset(offset);
+    console.log(displayData,"beforegetlist")
     getList();
-    
-  };
-
-  const getList = (event) => {
-    // event.preventDefault();
-    console.log(list);
-    let movies = list;
-    if(movies == undefined){
-      return(
-        <h1>Enter movie name and search</h1>
-      )
-    }
-    let slice = movies.slice(offset, offset + perPage)
-    // const movieList = slice.map(pd => <React.Fragment>
-    //     <p>{pd.title}</p>
-    //     <img src={pd.thumbnailUrl} alt=""/>
-    // </React.Fragment>)
-    // slice = movies.slice(offset, offset + perPage)
-    let count = Math.ceil(movies.length / perPage);
-    setPageCount(count)
-    // React.useEffect(() => {
-    //   slice = movies.slice(offset, offset + perPage)
+    // console.log(displayData,"aftercalling")
+    // let movies = list;
+    // // if(movies == undefined){
+    // //   return(
+    // //     <h1>Enter movie name and search</h1>
+    // //   )
+    // // }
+    // // let slice = movies.slice(offset, offset + perPage)
+    // // // const movieList = slice.map(pd => <React.Fragment>
+    // // //     <p>{pd.title}</p>
+    // // //     <img src={pd.thumbnailUrl} alt=""/>
+    // // // </React.Fragment>)
+    // // // slice = movies.slice(offset, offset + perPage)
+    // // let count = Math.ceil(movies.length / perPage);
+    // // setPageCount(count)
+    // // React.useEffect(() => {
+    //   let slice = movies.slice(offSet, offSet + perPage)
     //   let count = Math.ceil(movies.length / perPage);
     //   setPageCount(count)
+    // // });
+
+
+    // let movieData = slice.map((movie,i) => <React.Fragment>
+    //    <Movie movie={movie} key={i} />
+    // </React.Fragment>
+    // )
+    
+    // setDisplayData(movieData);
+  };
+
+  const getList = () => {
+    // event.preventDefault();
+    console.log(list,"list");
+    let movies = list;
+    // if(movies == undefined){
+    //   return(
+    //     <h1>Enter movie name and search</h1>
+    //   )
+    // }
+    // let slice = movies.slice(offset, offset + perPage)
+    // // const movieList = slice.map(pd => <React.Fragment>
+    // //     <p>{pd.title}</p>
+    // //     <img src={pd.thumbnailUrl} alt=""/>
+    // // </React.Fragment>)
+    // // slice = movies.slice(offset, offset + perPage)
+    // let count = Math.ceil(movies.length / perPage);
+    // setPageCount(count)
+    // React.useEffect(() => {
+      let slice = movies.slice(offSet, offSet + perPage)
+      let count = Math.ceil(movies.length / perPage);
+      setPageCount(count)
     // });
 
 
-    setDisplayData(slice.map((movie,i) => {
-      return <Movie movie={movie} key={i} />
-    }))
+    let movieData = slice.map((movie,i) => <React.Fragment>
+       <Movie movie={movie} key={i} />
+    </React.Fragment>
+    )
+    
+    setDisplayData(movieData);
+    console.log(slice,"ingetlist")
   }
+  //new refactor
+  // React.useEffect(()=>{
+  //   getList
+  //   handlePageChange
+    
+  // })
 
   return (
     <React.Fragment>
@@ -166,7 +205,8 @@ export default function Input() {
     <React.Fragment>
       {/* {console.log(list)} */}
       {displayData}
-      <Pagination count={pageCount} page={currentPage} onChange={handlePageChange} />
+      <Pagination count={pageCount} page={currentPage} onChange={handlePageChange} /> 
+      {/* //onChange={handlePageChange} */}
     </React.Fragment>
     
     </React.Fragment>
