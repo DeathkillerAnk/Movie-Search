@@ -78,12 +78,15 @@ export default function Input() {
         list.then(res => {
             return res.json()
         }).then(movies => {
-            setList(movies.Search)
-            setMovies(true)
-            console.log(list);
-            getList();
+            setList(movies)
+            setMovies(true)  
+            getList()
+            console.log(movies)         
+        }).then(()=>{
+          console.log(list, "submit");
+          getList()
         })
-    
+        
     // console.log("event.target.value")
   }
 
@@ -92,7 +95,7 @@ export default function Input() {
     setCurrentPage(value);
     let offset = (value-1) * perPage;
     setOffset(offset);
-    console.log(displayData,"beforegetlist")
+    // console.log(displayData,"beforegetlist")
     getList();
     // console.log(displayData,"aftercalling")
     // let movies = list;
@@ -127,12 +130,12 @@ export default function Input() {
   const getList = () => {
     // event.preventDefault();
     console.log(list,"list");
-    let movies = list;
-    // if(movies == undefined){
-    //   return(
-    //     <h1>Enter movie name and search</h1>
-    //   )
-    // }
+    let movies = list.Search;
+    if(movies == undefined){
+      return(
+        <h1>Enter movie name and search</h1>
+      )
+    }
     // let slice = movies.slice(offset, offset + perPage)
     // // const movieList = slice.map(pd => <React.Fragment>
     // //     <p>{pd.title}</p>
@@ -157,15 +160,13 @@ export default function Input() {
     console.log(slice,"ingetlist")
   }
   //new refactor
-  // React.useEffect(()=>{
-  //   getList
-  //   handlePageChange
-    
-  // })
+  React.useEffect(()=>{
+    getList  
+  })
 
   return (
+  <React.Fragment>
     <React.Fragment>
-<React.Fragment>
       <br/>
       <Grid alignItems="center" direction="column"
       justify="center" container spacing={3}>
@@ -205,8 +206,12 @@ export default function Input() {
     <React.Fragment>
       {/* {console.log(list)} */}
       {displayData}
+      <br/>
+      <Grid alignItems="center"
+      justify="center" container spacing={3} direction="column-reverse">
       <Pagination count={pageCount} page={currentPage} onChange={handlePageChange} /> 
       {/* //onChange={handlePageChange} */}
+      </Grid>
     </React.Fragment>
     
     </React.Fragment>
