@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from 'next/router'
-import Navbar from './components/Navbar'
-import Input from './components/Input'
+import Navbar from '../components/Navbar'
+import Input from '../components/Input'
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';

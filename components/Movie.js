@@ -143,7 +143,7 @@ export default function Movie(props) {
           Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
         </p>
         {/* <SimpleModal /> */}
-        <h1>{props.movie.imdbID}</h1>
+        {/* <h1>{props.movie.imdbID}</h1> */}
       </div>
       
     );
