@@ -77,18 +77,18 @@ export default function Details(props) {
     //   }
     //   console.log(props)
 
-    useEffect(()=>{
-        const data = fetch(`https://www.omdbapi.com/?apikey=9ab3c92d&i=${props.movie.imdbID}`);
-        data.then(res => {
-            return res.json()
-        }).then(movie => {
-            setFullDetails(
-                movie
-            )
-            console.log(fullDetails,"prop")
+    // useEffect(()=>{
+    //     const data = fetch(`https://www.omdbapi.com/?apikey=9ab3c92d&i=${props.movie.imdbID}`);
+    //     data.then(res => {
+    //         return res.json()
+    //     }).then(movie => {
+    //         setFullDetails(
+    //             movie
+    //         )
+    //         console.log(fullDetails,"prop")
 
-        })
-    },[]) 
+    //     })
+    // },[]) 
     // {
     //     const data = fetch(`https://www.omdbapi.com/?apikey=9ab3c92d&i=${this.state.imdbID}`);
     //     data.then(res => {
