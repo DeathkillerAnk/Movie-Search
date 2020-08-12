@@ -131,10 +131,10 @@ export default function Movie(props) {
       setOpen(false);
     };
 
-    const handleSubmit = (event) => {
-        let id = this.props.movie.imdbID;
-        Router.push({ pathname: '/movie-details', query: { id: id } });
-    }
+    // const handleSubmit = (event) => {
+    //     // let id = this.props.movie.imdbID;
+    //     Router.push({ pathname: '/movie-details', query: { id: id } });
+    // }
 
     const body = (
       <div style={modalStyle} className={classes.paper2}>
