@@ -228,7 +228,7 @@ const handleSubmit = (event) => {
       <br/>
       <Grid alignItems="center"
       justify="center" container spacing={3} direction="column-reverse">
-      {list?
+      {displayData?
         <Pagination count={pageCount} page={currentPage} onChange={handlePageChange} /> 
         :<h5>Search to see data</h5>
       }

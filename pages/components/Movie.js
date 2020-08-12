@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Button from '@material-ui/core/Button';
+import Modal from '@material-ui/core/Modal';
+import Details from './Details'
+
+function rand() {
+  return Math.round(Math.random() * 20) - 10;
+}
+
+function getModalStyle() {
+  const top = 50 + rand();
+  const left = 50 + rand();
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,6 +41,14 @@ const useStyles = makeStyles((theme) => ({
       display: 'block',
       maxWidth: '100%',
       maxHeight: '100%',
+    },
+    paper2: {
+      position: 'absolute',
+      width: 400,
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
     },
 }));
 
@@ -77,11 +102,51 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Movie(props) {
     const classes = useStyles();
+    const [modalStyle] = React.useState(getModalStyle);
+    const [open, setOpen] = React.useState(false);
+    const [fullDetails, setFullDetails] = React.useState({})
+    // const [id, setId] = React.useState(props.imdbID)
+    // console.log(props)
+    // useEffect(()=>{
+    //   setId(props.imdbID);
+
+    // },[id])
+
+    const handleOpen = () => {
+      // const data = fetch(`https://www.omdbapi.com/?apikey=9ab3c92d&i=${id}`);
+      //   data.then(res => {
+      //       return res.json()
+      //   }).then(movie => {
+      //       setFullDetails({
+      //           movie
+      //       })
+      //       console.log(movie,"det")
+      //       setOpen(true);
+      //   })
+        // console.log(id,"open")
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
 
     const handleSubmit = (event) => {
         let id = this.props.movie.imdbID;
         Router.push({ pathname: '/movie-details', query: { id: id } });
     }
+
+    const body = (
+      <div style={modalStyle} className={classes.paper2}>
+        <h2 id="simple-modal-title">Text in a modal</h2>
+        <p id="simple-modal-description">
+          Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+        </p>
+        {/* <SimpleModal /> */}
+        <h1>{props.movie.imdbID}</h1>
+      </div>
+      
+    );
     
     return (
       <React.Fragment className={classes.root}>
@@ -106,9 +171,29 @@ export default function Movie(props) {
                   </Typography>
                 </Grid>
                 <Grid item>
-                <Button variant="contained" color="primary" onClick={handleSubmit}>
+                <Button variant="contained" color="primary" onClick={handleOpen}>
                     Details
                 </Button>
+                {/* <button type="button" onClick={handleOpen}>
+        Open Modal
+      </button> */}
+
+      <Modal
+        style={{display:'flex',alignItems:'center',justifyContent:'center'}}
+        open={open}
+        onClose={handleClose}
+      >
+        {/* <h1>{props.movie.imdbID}</h1> */}
+        {/* <Grid alignItems="center"
+      justify="center" container spacing={3} direction="column"> */}
+        
+        <Details movie={props.movie}/>
+        {/* </Grid> */}
+       
+        
+        {/* {body} */}
+      </Modal>
+
                 </Grid>
               </Grid>
             </Grid>
