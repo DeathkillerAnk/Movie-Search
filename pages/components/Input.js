@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -60,7 +60,7 @@ export default function Input() {
   const [perPage, setPerPage] = React.useState(8);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [pageCount, setPageCount] = React.useState(1);
-  const [displayData, setDisplayData] = React.useState();
+  const [displayData, setDisplayData] = React.useState([]);
 
   const handleChange = (event) => {
     setCategory(event.target.value);
@@ -71,71 +71,71 @@ export default function Input() {
     console.log(searchKey);
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   console.log(category, searchKey);
+  //   const data = fetch(`https://www.omdbapi.com/?apikey=9ab3c92d&s=${searchKey}`);
+  //       data.then(res => {
+  //           return res.json()
+  //       }).then(movies => {
+  //           const d = movies.Search
+  //           setList(d)
+  //           setMovies(true)
+  //           console.log(d,"submit");
+            
+  //       })
+  //       console.log(list,"submited");    
+  //   getList();
+  //   // console.log("event.target.value")
+  // }
+
+  useEffect(()=> {
     console.log(category, searchKey);
-    const list = fetch(`https://www.omdbapi.com/?apikey=9ab3c92d&s=${searchKey}`);
-        list.then(res => {
+    const data = fetch(`https://www.omdbapi.com/?apikey=9ab3c92d&s=${searchKey}`);
+        data.then(res => {
             return res.json()
         }).then(movies => {
-            setList(movies)
-            setMovies(true)  
-            getList()
-            console.log(movies)         
-        }).then(()=>{
-          console.log(list, "submit");
-          getList()
+            const d = movies.Search
+            setList(d)
+            setMovies(true)
+            
+            console.log(movies,"submit");
+
         })
-        
+    
+        // console.log(list,"submited");
     // console.log("event.target.value")
-  }
+},[searchKey])
+const handleSubmit = (event) => {
+  event.preventDefault();
+  setCurrentPage(1)
+  getList();
+}
 
   //pages
+
+  useEffect(()=> {
+    // handlePageChange()
+    getList()
+    
+
+},[currentPage])
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
     let offset = (value-1) * perPage;
     setOffset(offset);
-    // console.log(displayData,"beforegetlist")
     getList();
-    // console.log(displayData,"aftercalling")
-    // let movies = list;
-    // // if(movies == undefined){
-    // //   return(
-    // //     <h1>Enter movie name and search</h1>
-    // //   )
-    // // }
-    // // let slice = movies.slice(offset, offset + perPage)
-    // // // const movieList = slice.map(pd => <React.Fragment>
-    // // //     <p>{pd.title}</p>
-    // // //     <img src={pd.thumbnailUrl} alt=""/>
-    // // // </React.Fragment>)
-    // // // slice = movies.slice(offset, offset + perPage)
-    // // let count = Math.ceil(movies.length / perPage);
-    // // setPageCount(count)
-    // // React.useEffect(() => {
-    //   let slice = movies.slice(offSet, offSet + perPage)
-    //   let count = Math.ceil(movies.length / perPage);
-    //   setPageCount(count)
-    // // });
-
-
-    // let movieData = slice.map((movie,i) => <React.Fragment>
-    //    <Movie movie={movie} key={i} />
-    // </React.Fragment>
-    // )
-    
-    // setDisplayData(movieData);
   };
-
+  
   const getList = () => {
     // event.preventDefault();
     console.log(list,"list");
-    let movies = list.Search;
-    if(movies == undefined){
-      return(
-        <h1>Enter movie name and search</h1>
-      )
-    }
+    let movies = list;
+    // if(movies == undefined){
+    //   return(
+    //     <h1>Enter movie name and search</h1>
+    //   )
+    // }
     // let slice = movies.slice(offset, offset + perPage)
     // // const movieList = slice.map(pd => <React.Fragment>
     // //     <p>{pd.title}</p>
@@ -145,25 +145,31 @@ export default function Input() {
     // let count = Math.ceil(movies.length / perPage);
     // setPageCount(count)
     // React.useEffect(() => {
-      let slice = movies.slice(offSet, offSet + perPage)
-      let count = Math.ceil(movies.length / perPage);
-      setPageCount(count)
+      if(movies!=undefined){
+        let slice = movies.slice(offSet, offSet + perPage)
+        let count = Math.ceil(movies.length / perPage);
+        setPageCount(count)
+        console.log(slice,"sl")
+        setDisplayData(slice);
+        console.log(slice,"ingetlist")
+      }
+
     // });
 
 
-    let movieData = slice.map((movie,i) => <React.Fragment>
-       <Movie movie={movie} key={i} />
-    </React.Fragment>
-    )
-    
-    setDisplayData(movieData);
-    console.log(slice,"ingetlist")
+    // let movieData = slice.map((movie,i) => <React.Fragment>
+    //    <Movie movie={movie} key={i} />
+    // </React.Fragment>
+    // )
+    // console.log(slice,"sl")
+    // setDisplayData(slice);
+    // console.log(slice,"ingetlist")
+
   }
   //new refactor
-  React.useEffect(()=>{
-    getList  
-  })
-
+  // useEffect(()=>{
+  //   getList()
+  // })
   return (
   <React.Fragment>
     <React.Fragment>
@@ -203,13 +209,30 @@ export default function Input() {
   
     </React.Fragment>
     <br/>
+    {getList}
+    <React.Fragment>
+    { 
+        
+        
+        displayData.map((movie,i) => <React.Fragment>
+       <Movie movie={movie} key={i} />
+    </React.Fragment>
+    )
+    
+    }
+    {console.log(displayData,"jsx")}
+    </React.Fragment>
     <React.Fragment>
       {/* {console.log(list)} */}
-      {displayData}
+      {/* {displayData} */}
       <br/>
       <Grid alignItems="center"
       justify="center" container spacing={3} direction="column-reverse">
-      <Pagination count={pageCount} page={currentPage} onChange={handlePageChange} /> 
+      {list?
+        <Pagination count={pageCount} page={currentPage} onChange={handlePageChange} /> 
+        :<h5>Search to see data</h5>
+      }
+      {/* <Pagination count={pageCount} page={currentPage} onChange={handlePageChange} />  */}
       {/* //onChange={handlePageChange} */}
       </Grid>
     </React.Fragment>
